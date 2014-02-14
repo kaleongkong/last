@@ -61,7 +61,7 @@ class UsersModel(object):
 
     def TESTAPI_resetFixture(self):
 	Users.objects.all().delete()
-	return (SUCCESS, 1)
+	return 1
 	
 def invalidusername(name):
      if(len(name)>MAX_USERNAME_LENGTH):

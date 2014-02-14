@@ -73,14 +73,7 @@ class AllLoginTest(TestCase):
 	newuser = UsersModel()
 	self.assertEqual(newuser.add("user", "password"), (SUCCESS,1))
 
-"""
 
-if __name__ == "__main__":
-    # Add a verbose argument
-    
-    sys.argv = [sys.argv[0]] + ["-v"] + sys.argv[1:]
-    unittest.main()
-""""
 
 
 

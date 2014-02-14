@@ -67,18 +67,13 @@ class AllLoginTest(TestCase):
 	earlieruser = Users(username= "user", password = "password")
 	earlieruser.save()
 	newuser = UsersModel()
-	self.assertEqual(newuser.login("user", "password"), (SUCCESS,2))
+	self.assertEqual(newuser.login("user", "password"), (-1,2))
 
     def test_success_add(self):
 	newuser = UsersModel()
-	self.assertEqual(newuser.add("user", "password"), (SUCCESS,1))
+	self.assertEqual(newuser.add("user", "password"), (-2,1))
 
 
-
-if __name__ == "__main__":
-    # Add a verbose argument
-    sys.argv = [sys.argv[0]] + ["-v"] + sys.argv[1:]
-    unittest.main()
 
 
 

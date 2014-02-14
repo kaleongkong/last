@@ -103,9 +103,8 @@ def client(request):
 def reset(request):
     if request.method == "POST":
 	if request.META['CONTENT_TYPE']=='application/json':
-    	    u = UserModel()
-	    r = u.TESTAPI_resetFixture()
-            return HttpResponse( json.dumps({"errCode":r[0], 'count': r[1]}), content_type="application/json")
+    	    Users.objects.all().delete()
+            return HttpResponse( json.dumps({"errCode":1}), content_type="application/json")
     
     return client(request)
 
@@ -114,25 +113,18 @@ def unittests(request):
     response = {}
     if request.method == "POST":
 	
-	cmd = 'ls'
-	#print "..........................."
-	#print cmd
-	#print "..........................."
-	load = unittest.TestLoader().loadTestsFromModule(AllLoginTest)
-	#p = subprocess.Popen(["python","manage.py", "test", "login"], stdout= subprocess.PIPE, stderr = subprocess.PIPE, stdin =subprocess.PIPE)
-	#out, err = p.communicate()
-	#num_tests_break_list = out.split("Ran ")
-	#totalTests = num_tests_break_list[1].split()[0]
-	#nrFailed_break_list = out.split("nrFailed=")
-	#nrFailed = nrFailed_break_list[1].split()[0]
-	#print out
-	#print num_tests
-	#print num_nrFailed
-	#print type(out)
-	#response["totalTests"] = int(totalTests)
-	#response["nrFailed"] = int(nrFailed)
-	#response["output"] = output
-    return HttpResponse( json.dumps({"totalTests":10, 'nrFailed': 0, 'output':"yes"}), content_type="application/json")
+	p = subprocess.Popen(["python","manage.py", "test", "login"], stdout= subprocess.PIPE, stderr = subprocess.PIPE, stdin =subprocess.PIPE)
+	out, err = p.communicate()
+	num_tests_break_list = err.split("Ran ")
+	totalTests = num_tests_break_list[1].split()[0]
+	nrFailed = 0
+	if "failures=" in err:
+	    nrFailed_break_list = err.split("failures=")
+	    nrFailed = nrFailed_break_list[1].split(")")[0]
+	    
+	response = {"totalTests":int(totalTests), "nrFailed": int(nrFailed), "output":err}
+	print response
+    return HttpResponse( json.dumps(response), content_type="application/json")
     
 
 
