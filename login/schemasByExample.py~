@@ -1,0 +1,24 @@
+class Schema():
+	def __init__(self, sch, doc=None, opt =None, nullable = None, valid =None):
+		return null
+
+	def when(self, attr):
+		return null
+
+	def __getitem__(self, key, value):
+		return null
+
+	def __setitem__(self):
+		return null
+
+	def registerErrorReporter(func):
+		return null
+	def validate(sch, obj, objName='unnamed'):
+		return null
+	def htmlDoc(sch):
+		return null
+	def unionDict(dict1, dict2):
+		return null
+
+
+	

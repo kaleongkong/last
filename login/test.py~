@@ -1,0 +1,15 @@
+from django.test import TestCase
+from login.models import UserModels
+SUCCESS = 1;
+ERR_BAD_CREDENTIALS = -1;
+ERR_USER_EXISTS = -2;
+ERR_BAD_USERNAME = -3;
+ERR_BAD_PASSWORD  = -4;
+MAX_USERNAME_LENGTH =128
+MAX_PASSWORD_LENGTH =128
+
+class AllLoginTest(TestCase):
+    def empty_login_user_sting_test(self):
+	testuser = UserModels("random", "random")
+	err_code = testuser.login("","")
+	self.assertEqual(err_code, -3)
