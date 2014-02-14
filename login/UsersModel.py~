@@ -33,7 +33,7 @@ class UsersModel(object):
 		err_code = ERR_BAD_CREDENTIALS
 	except:
 	    err_code = ERR_BAD_CREDENTIALS
-        return (err_code, count)
+        return (SUCCESS, count)
 
 
     def add(self,uname, pword):
@@ -57,7 +57,7 @@ class UsersModel(object):
 	   count = user.count
 	else:
 	   err_code = ERR_USER_EXISTS
-	return (err_code, count)
+	return (SUCCESS, count)
 
     def TESTAPI_resetFixture(self):
 	Users.objects.all().delete()

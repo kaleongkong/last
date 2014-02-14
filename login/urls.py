@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     url(r'^users/add', views.add, name ='add'),
     url(r'^users/login', views.login, name ='login'),
     url(r'^TESTAPI/resetFixture',views.reset),
+    url(r'^TESTAPI/unitTests',views.unittests),
     # ex: /polls/
     #url(r'^$', views.index, name='index'),
     # ex: /polls/5/

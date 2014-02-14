@@ -10,18 +10,18 @@ MAX_PASSWORD_LENGTH =128
 class UsersModel(object):
 
     def login(self, input_name, input_pw):
-	#print input_name
-        #print input_pw
+	print input_name
+        print input_pw
 	existed_users = Users.objects
 	err_code = SUCCESS
 	count = 0
 	#print existed_users.get(username = input_name)
 	if invalidusername(input_name) or input_name =="" or len(input_name)==0:
-	    #print "here1"
+	    print "here1"
 	    err_code = ERR_BAD_USERNAME
 	    return (err_code, count)
 	if invalidpassword(input_pw)or input_pw =="" or len(input_pw)==0:
-	    #print "here2"
+	    print "here2"
 	    err_code = ERR_BAD_PASSWORD
 	    return (err_code, count)
 	try:
@@ -40,17 +40,17 @@ class UsersModel(object):
 	err_code = SUCCESS
 	count = 0
 	existed_users = Users.objects
-	#print "hello"
-	#print existed_users 
-	#print invalidusername(uname)
+	print "hello"
+	print existed_users 
+	print invalidusername(uname)
 	if invalidusername(uname) or uname =="" or len(uname)==0:
 	    err_code = ERR_BAD_USERNAME
 	    return (err_code, count)
 	if invalidpassword(pword)or pword =="" or len(pword)==0:
 	    err_code = ERR_BAD_PASSWORD
 	    return (err_code, count)
-	#print existed_users.filter(username = uname)
-        #print existed_users.filter(username = uname)==[]
+	print existed_users.filter(username = uname)
+        print existed_users.filter(username = uname)==[]
 	if len(existed_users.filter(username = uname))==0: # user doesn't exist before  
 	   user = Users(username = uname, password = pword)
 	   user.save()

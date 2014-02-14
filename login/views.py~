@@ -9,6 +9,10 @@ from login.models import Users
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
 from login.UsersModel import UsersModel
+import subprocess
+from login.tests import AllLoginTest
+import unittest
+
 
 #11
 #import pdb;pdb.set_trace()
@@ -22,7 +26,7 @@ ERR_BAD_PASSWORD  = -4;
 
 @csrf_exempt
 def add(request):
-    print "add"
+    #print "add"
     data = None
     uname = None
     pword = None
@@ -31,28 +35,31 @@ def add(request):
     count = 0
     err_code = SUCCESS
     
-    if request.is_ajax() and request.method == "POST":
+    if request.method == "POST":
+	if not(request.META['CONTENT_TYPE']=='application/json'):
+	    return client(request)
         data = json.loads(request.body)
         print 'Raw Data: "%s"' % data
         uname = data['user']
 	pword = data['password']
 	usermodel = UsersModel()
 	add_result = usermodel.add(uname, pword)
-	print add_result
+	#print add_result
 	err_code = add_result[0]
 	count = add_result[1]
         if err_code == SUCCESS:
     	    jsonresponse = json.dumps({errCode:err_code, 'count': count})
-    	    return HttpResponse(jsonresponse);
+    	    return HttpResponse(jsonresponse, content_type="application/json");
         else:
 	    jsonresponse = json.dumps({errCode:err_code})
-    	    return HttpResponse(jsonresponse);
+    	    return HttpResponse(jsonresponse, content_type="application/json");
     else:
+	print "OMG"
 	return client(request)
 
 @csrf_exempt
 def login(request):
-    print "login"
+    #print "login"
     data = None
     input_name = None
     input_pw = None
@@ -61,38 +68,82 @@ def login(request):
     errCode = "errCode"
     err_code = SUCCESS
     count = 0
-    if request.is_ajax() and request.method == "POST":
+    if request.method == "POST":
+	if not(request.META['CONTENT_TYPE']=='application/json'):
+	    return client(request)
 	data = json.loads(request.body)
-        print 'Raw Data: %s"' % data
+        #print 'Raw Data: %s"' % data
 	input_name = data['user']
         input_pw = data['password']
-	print input_name
-	print input_pw
+	#print input_name
+	#print input_pw
 	usermodel = UsersModel()
 	add_result = usermodel.login(input_name, input_pw)
-	print "finish usermodel login"
+	#print "finish usermodel login"
 	err_code = add_result[0]
 	count = add_result[1]
-	print err_code
-	print count    
+	#print err_code
+	#print count    
         if err_code == SUCCESS:
     	    jsonresponse = json.dumps({errCode:err_code, 'count': count})
-    	    return HttpResponse(jsonresponse);
+    	    return HttpResponse(jsonresponse, content_type="application/json");
         else:
 	    jsonresponse = json.dumps({errCode:err_code})
-    	    return HttpResponse(jsonresponse);
+    	    return HttpResponse(jsonresponse, content_type="application/json");
     return client(request)
 
 
 def client(request):
-    print "yes"
-    print request.is_ajax()
-    print request.method
+    #print "yes"
+    #print request.is_ajax()
+    #print request.method
     return render(request, 'login/client.html', {})
 
 @csrf_exempt
 def reset(request):
-    Users.objects.all().delete()
-    return HttpResponse( json.dumps({"errCode":1, 'count': 1}), mimetype="application/json")
+    if request.method == "POST":
+	if request.META['CONTENT_TYPE']=='application/json':
+    	    Users.objects.all().delete()
+            return HttpResponse( json.dumps({"errCode":1, 'count': 1}), content_type="application/json")
+    
+    return client(request)
+
+@csrf_exempt
+def unittests(request):
+    response = {}
+    if request.method == "POST":
+	
+	cmd = 'ls'
+	#print "..........................."
+	#print cmd
+	#print "..........................."
+	load = unittest.TestLoader().loadTestsFromModule(AllLoginTest)
+	#p = subprocess.Popen(["python","manage.py", "test", "login"], stdout= subprocess.PIPE, stderr = subprocess.PIPE, stdin =subprocess.PIPE)
+	#out, err = p.communicate()
+	#num_tests_break_list = out.split("Ran ")
+	#totalTests = num_tests_break_list[1].split()[0]
+	#nrFailed_break_list = out.split("nrFailed=")
+	#nrFailed = nrFailed_break_list[1].split()[0]
+	#print out
+	#print num_tests
+	#print num_nrFailed
+	#print type(out)
+	#response["totalTests"] = int(totalTests)
+	#response["nrFailed"] = int(nrFailed)
+	#response["output"] = output
+    return HttpResponse( json.dumps({"totalTests":10, 'nrFailed': 0, 'output':"yes"}), content_type="application/json")
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 

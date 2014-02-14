@@ -27,7 +27,7 @@ class Users(models.Model):
     def increment(self):
 	self.count +=1
 	self.save()
-    
+"""
     def login(self, input_name, input_pw):
 	print input_name
         print input_pw
@@ -93,5 +93,5 @@ def invalidpassword(password):
 	return True
      else:
 	return False
-
+"""
 

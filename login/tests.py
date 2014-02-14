@@ -1,6 +1,10 @@
 from django.test import TestCase
 from login.models import Users
 from login.UsersModel import UsersModel
+import unittest
+import sys
+
+
 SUCCESS = 1;
 ERR_BAD_CREDENTIALS = -1;
 ERR_USER_EXISTS = -2;
@@ -11,8 +15,9 @@ MAX_PASSWORD_LENGTH =128
 
 class AllLoginTest(TestCase):
     def test_empty_login_user_sting(self):
+	print "I'm here"
 	usermodel = UsersModel()
-	print usermodel
+	#print usermodel
 	self.assertEqual(usermodel.login("","password"), (ERR_BAD_USERNAME,0))
     def test_long_login_user_sting(self):
 	usermodel = UsersModel()
@@ -68,9 +73,14 @@ class AllLoginTest(TestCase):
 	newuser = UsersModel()
 	self.assertEqual(newuser.add("user", "password"), (SUCCESS,1))
 
+"""
 
-
-
+if __name__ == "__main__":
+    # Add a verbose argument
+    
+    sys.argv = [sys.argv[0]] + ["-v"] + sys.argv[1:]
+    unittest.main()
+""""
 
 
 
