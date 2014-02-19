@@ -36,7 +36,7 @@ def add(request):
     err_code = SUCCESS
     
     if request.method == "POST":
-	if not(request.META['CONTENT_TYPE']=='application/json'):
+	if not('application/json' in request.META['CONTENT_TYPE']):
 	    return client(request)
         data = json.loads(request.body)
         print 'Raw Data: "%s"' % data
@@ -69,7 +69,9 @@ def login(request):
     err_code = SUCCESS
     count = 0
     if request.method == "POST":
-	if not(request.META['CONTENT_TYPE']=='application/json'):
+	print request
+	print "isPost"
+	if not('application/json' in request.META['CONTENT_TYPE']):
 	    return client(request)
 	data = json.loads(request.body)
         #print 'Raw Data: %s"' % data
@@ -85,9 +87,11 @@ def login(request):
 	#print err_code
 	#print count    
         if err_code == SUCCESS:
+	    print "success"
     	    jsonresponse = json.dumps({errCode:err_code, 'count': count})
     	    return HttpResponse(jsonresponse, content_type="application/json");
         else:
+	    print "not success"
 	    jsonresponse = json.dumps({errCode:err_code})
     	    return HttpResponse(jsonresponse, content_type="application/json");
     return client(request)

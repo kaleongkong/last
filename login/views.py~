@@ -36,7 +36,7 @@ def add(request):
     err_code = SUCCESS
     
     if request.method == "POST":
-	if not(request.META['CONTENT_TYPE']=='application/json'):
+	if not('application/json' in request.META['CONTENT_TYPE']):
 	    return client(request)
         data = json.loads(request.body)
         print 'Raw Data: "%s"' % data
@@ -69,7 +69,10 @@ def login(request):
     err_code = SUCCESS
     count = 0
     if request.method == "POST":
-	if not(request.META['CONTENT_TYPE']=='application/json'):
+	print request
+	print "isPost"
+	if not('application/json' in request.META['CONTENT_TYPE']):
+	    print "not json"
 	    return client(request)
 	data = json.loads(request.body)
         #print 'Raw Data: %s"' % data
@@ -85,9 +88,11 @@ def login(request):
 	#print err_code
 	#print count    
         if err_code == SUCCESS:
+	    print "success"
     	    jsonresponse = json.dumps({errCode:err_code, 'count': count})
     	    return HttpResponse(jsonresponse, content_type="application/json");
         else:
+	    print "not success"
 	    jsonresponse = json.dumps({errCode:err_code})
     	    return HttpResponse(jsonresponse, content_type="application/json");
     return client(request)
@@ -113,11 +118,6 @@ def unittests(request):
     response = {}
     if request.method == "POST":
 	
-	cmd = 'ls'
-	#print "..........................."
-	#print cmd
-	#print "..........................."
-	#pleasework = unittest.TestLoader().loadTestsFromModule(AllLoginTest)
 	p = subprocess.Popen(["python","manage.py", "test", "login"], stdout= subprocess.PIPE, stderr = subprocess.PIPE, stdin =subprocess.PIPE)
 	out, err = p.communicate()
 	num_tests_break_list = err.split("Ran ")
@@ -126,11 +126,7 @@ def unittests(request):
 	if "failures=" in err:
 	    nrFailed_break_list = err.split("failures=")
 	    nrFailed = nrFailed_break_list[1].split(")")[0]
-	    print nrFailed
-	print err
-	print totalTests
-	#print num_nrFailed
-	#print type(out)
+	    
 	response = {"totalTests":int(totalTests), "nrFailed": int(nrFailed), "output":err}
 	print response
     return HttpResponse( json.dumps(response), content_type="application/json")

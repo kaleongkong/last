@@ -1,0 +1,41 @@
+<!DOCTYPE html5>
+{% load staticfiles %}
+<html>
+<head>
+	<script type = "text/javascript" src="login/loginform.js"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'login/client.css' %}">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<script type = "text/javascript" src="login/loginform.js"></script>
+<head>
+<body onload = "process()">
+	<form>
+		Username: <input type="text" name="user" id="username"><br> <div id = "desp_input"/>
+		Password: <input type= "password" name="password" id="password"><br>
+		<input type = "button" value="Log in" id = "log-in-button">
+		<input type = "button" value="Submit" id = "add-button">
+	</form>
+<script>
+$('#log-in-button').click(){
+	username = $('#username').val()
+	password = $('#password').val()
+	$.ajax({
+	        type: 'POST',
+	        url: page,
+	        data: JSON.stringify(dict),
+	        contentType: "application/json",
+	        dataType: "json",
+	        success: 
+		function(data){
+			alert("success");
+		},
+	        error: 
+		function(data){
+			alert("failure")
+		}
+	    });	
+	}
+</script>
+</body>
+</html>
+
